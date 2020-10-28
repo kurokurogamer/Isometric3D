@@ -5,7 +5,7 @@ using UnityEngine;
 public class FollowCamera : MonoBehaviour
 {
     [SerializeField, Tooltip("プレイヤー")]
-    private GameObject _target;
+    private GameObject _target = null;
     [SerializeField, Tooltip("距離")]
     private float _distans = 10.0f;
     [SerializeField, Tooltip("カメラサイズ")]

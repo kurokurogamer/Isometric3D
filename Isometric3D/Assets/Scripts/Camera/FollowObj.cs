@@ -22,7 +22,7 @@ public class FollowObj : MonoBehaviour
 	private float _speed = 3.0f;
 	[Header("Debug")]
 	[SerializeField, Tooltip("デバックの有無")]
-	private bool _debug;
+	private bool _debug = false;
 	[SerializeField, Tooltip("確認したい場所のオブジェクトを入れる")]
 	private GameObject _debugObj = null;
 
