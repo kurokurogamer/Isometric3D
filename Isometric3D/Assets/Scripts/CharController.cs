@@ -31,7 +31,6 @@ public class CharController : MonoBehaviour
         {
             Move();
         }
-
     }
 
     // 移動
@@ -50,6 +49,5 @@ public class CharController : MonoBehaviour
 
         // 移動
         transform.position += pos;
-
     }
 }
