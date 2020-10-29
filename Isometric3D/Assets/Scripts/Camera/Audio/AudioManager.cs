@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instans = null;
 
     private Dictionary<AUDIO, AudioSource> _sourcDictionary;
+
     private List<AudioSource> _sourceList;
 
     private Coroutine _coroutine;
@@ -88,7 +89,7 @@ public class AudioManager : MonoBehaviour
     public void PlayOneVoice(AudioClip clip)
     {
         _sourcDictionary[AUDIO.VOICE].PlayOneShot(clip);
-       // _sourceList[(int)AUDIO.VOICE].PlayOneShot(clip);
+        // _sourceList[(int)AUDIO.VOICE].PlayOneShot(clip);
     }
 
     public void Stop(AUDIO type)
