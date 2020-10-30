@@ -16,6 +16,7 @@ public class AudioManager : MonoBehaviour
 
     private Dictionary<AUDIO, AudioSource> _sourcDictionary;
 
+    [SerializeField]
     private List<AudioSource> _sourceList;
 
     private Coroutine _coroutine;
