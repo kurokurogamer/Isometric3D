@@ -24,8 +24,6 @@ public class FlashObj : MonoBehaviour
 				distans = 0;
 			}
 
-			Debug.Log(distans);
-
 			_image.color = new Color(_image.color.r, _image.color.g, _image.color.b, 1 / distans);
 		}
 	}
