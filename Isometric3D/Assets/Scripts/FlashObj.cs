@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class FlashObj : MonoBehaviour
 {
 	[SerializeField]
-	private Image _image;
+	private Image _image = null;
     // Start is called before the first frame update
     void Start()
     {
