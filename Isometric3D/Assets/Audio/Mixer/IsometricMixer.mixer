@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!244 &-6471168724942202849
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 6d44df133f722f945be38946b03d3096
+  m_EffectName: Attenuation
+  m_MixLevel: f6db1ed2a2e8bca4aa91c8dd8fdde481
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!241 &24100000
 AudioMixerController:
   m_ObjectHideFlags: 0
@@ -16,13 +30,18 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
+  - guid: 0dec36e9c1fc88f489afce3febc773cf
+    name: BGMSEVolume
+  - guid: 903f100fa2acd454d8f8b064e162ae0b
+    name: GameSEVolume
   - guid: e5f89bb603e9b5a4fb9b6a42e9fbd720
-    name: SEVolume
+    name: SystemSEVolume
   m_AudioMixerGroupViews:
   - guids:
     - a753da08424801a43912cf262d63dba2
     - 34f53fc174fdede43b3a31c42a1a1e98
     - 53105bda4e1034a4e87e1deace5a4f2b
+    - 92df09af143a32742b6b97d658cade1b
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -38,6 +57,7 @@ AudioMixerGroupController:
   m_Children:
   - {fileID: 1671781330029361605}
   - {fileID: 3495927442091084320}
+  - {fileID: 4265559474344708184}
   m_Volume: 51b326056fecfd24c87c1880ea4547c3
   m_Pitch: 694c0d42753f45348a210aa7963a0005
   m_Send: 00000000000000000000000000000000
@@ -72,6 +92,7 @@ AudioMixerSnapshotController:
   m_SnapshotID: 94fe097c4290e164784c96c168d36572
   m_FloatValues:
     e5f89bb603e9b5a4fb9b6a42e9fbd720: 0
+    903f100fa2acd454d8f8b064e162ae0b: 0.04171297
   m_TransitionOverrides: {}
 --- !u!243 &1671781330029361605
 AudioMixerGroupController:
@@ -98,7 +119,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SE
+  m_Name: SystemSE
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 34f53fc174fdede43b3a31c42a1a1e98
   m_Children: []
@@ -107,6 +128,25 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 5420668360594363569}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!243 &4265559474344708184
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GameSE
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 92df09af143a32742b6b97d658cade1b
+  m_Children: []
+  m_Volume: 903f100fa2acd454d8f8b064e162ae0b
+  m_Pitch: 052f6f0cde5eb084d9091385aa5d15b3
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -6471168724942202849}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0

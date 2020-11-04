@@ -1,45 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+using System;
 
 public class AudioManager : MonoBehaviour
 {
     public enum AUDIO
-	{
-        SE,
+    {
+        SYSTEMSE,
+        GAMESE,
         BGM,
         VOICE,
         MAX
-	}
+    }
 
     public static AudioManager instans = null;
 
     private Dictionary<AUDIO, AudioSource> _sourcDictionary;
 
-    [SerializeField]
     private List<AudioSource> _sourceList;
+    [SerializeField]
+    private AudioMixer _mixer = null;
 
     private Coroutine _coroutine;
 
-	private void Awake()
-	{
-		if(instans == null)
-		{
+    private void Awake()
+    {
+        if (instans == null)
+        {
             instans = this;
             DontDestroyOnLoad(instans);
-		}
+        }
         else
-		{
+        {
             Destroy(this.gameObject);
-		}
-	}
+        }
+    }
 
-	// Start is called before the first frame update
-	void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         // Dictionaryタイプ
         _sourcDictionary = new Dictionary<AUDIO, AudioSource>();
-        AUDIO type = AUDIO.SE;
+        AUDIO type = AUDIO.SYSTEMSE;
         foreach (Transform child in transform)
         {
             // nullチェック
@@ -52,29 +56,35 @@ public class AudioManager : MonoBehaviour
             }
         }
         // Listタイプ
-        _sourceList = new List<AudioSource>();
-        foreach(Transform child in transform)
-		{
-            // nullチェック
-            if(child.TryGetComponent(out AudioSource source))
-			{
-                Debug.Log(type + " = " + source.gameObject.name);
-                _sourceList.Add(source);
-			}
-		}
+        //_sourceList = new List<AudioSource>();
+        //foreach (Transform child in transform)
+        //{
+        // nullチェック
+        //	if (child.TryGetComponent(out AudioSource source))
+        //	{
+        //		Debug.Log(type + " = " + source.gameObject.name);
+        //		_sourceList.Add(source);
+        //	}
+        //}
     }
 
+    // サウンド再生(重複あり)
     public void Play(AUDIO type, ulong delay = 0)
     {
         _sourcDictionary[type].Play(delay);
-        //_sourceList[(int)type].Play(delay);
     }
 
-	public void PlayOneSE(AudioClip clip)
-	{
-        _sourcDictionary[AUDIO.SE].PlayOneShot(clip);
-        // _sourceList[(int)AUDIO.SE].PlayOneShot(clip);
-	}
+    // サウンド再生(重複なし)
+    public void PlayOneShot(AUDIO type, AudioClip clip)
+    {
+        _sourcDictionary[type].PlayOneShot(clip);
+    }
+
+
+    public void PlayOneSE(AudioClip clip, AUDIO type = AUDIO.SYSTEMSE)
+    {
+        _sourcDictionary[type].PlayOneShot(clip);
+    }
 
     public void PlayOneBGM(AudioClip clip)
     {
@@ -84,52 +94,70 @@ public class AudioManager : MonoBehaviour
         }
 
         // _sourcDictionary[AUDIO.BGM].PlayOneShot(clip);
-        // _sourceList[(int)AUDIO.BGM].PlayOneShot(clip);
     }
 
     public void PlayOneVoice(AudioClip clip)
     {
         _sourcDictionary[AUDIO.VOICE].PlayOneShot(clip);
-        // _sourceList[(int)AUDIO.VOICE].PlayOneShot(clip);
     }
 
     public void Stop(AUDIO type)
-	{
+    {
         _sourcDictionary[type].Stop();
-        // _sourceList[(int)type].Stop();
-	}
+    }
 
     private IEnumerator LoopBGM(AudioClip clip)
-	{
-        while(true)
-		{
+    {
+        while (true)
+        {
             // 再生中でなければ再生する
-            if(!_sourcDictionary[AUDIO.BGM].isPlaying)
-			{
+            if (!_sourcDictionary[AUDIO.BGM].isPlaying)
+            {
                 _sourcDictionary[AUDIO.BGM].PlayOneShot(clip);
-			}
+            }
             yield return null;
-		}
-	}
+        }
+    }
 
     public void AllStop()
-	{
+    {
         foreach (var sound in _sourcDictionary)
         {
             sound.Value.Stop();
-            // 同じ処理
-            // _sourcDictionary[sound.Key].Stop(); ;
         }
         // ループで全てのAudioSourceのStopを呼ぶ
         foreach (AudioSource source in _sourceList)
-		{
+        {
             source.Stop();
-		}
-	}
+        }
+    }
+
+    // 音量変更用関数
+    public void SetVolume(AUDIO type, float volume)
+    {
+        switch (type)
+        {
+            case AUDIO.SYSTEMSE:
+                _mixer.SetFloat("SystemSEVolume", Mathf.Lerp(-80, 0, volume));
+                break;
+            case AUDIO.GAMESE:
+                _mixer.SetFloat("GameSEVolume", Mathf.Lerp(-80, 0, volume));
+                break;
+            case AUDIO.BGM:
+                _mixer.SetFloat("BGMSEVolume", Mathf.Lerp(-80, 0, volume));
+                break;
+            case AUDIO.VOICE:
+                _mixer.SetFloat("VOICEVolume", Mathf.Lerp(-80, 0, volume));
+                break;
+            case AUDIO.MAX:
+            default:
+                break;
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
