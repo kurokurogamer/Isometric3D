@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class AudioChanger : MonoBehaviour
 {
     [SerializeField]
-    private AudioManager.AUDIO _type;
+    private AudioManager.AUDIO _type = AudioManager.AUDIO.SYSTEMSE;
     private Slider _slider;
 
     // Start is called before the first frame update

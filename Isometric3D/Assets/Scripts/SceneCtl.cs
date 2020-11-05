@@ -38,7 +38,10 @@ public class SceneCtl : MonoBehaviour
 	// シーンのロード(非同期読み込み)
 	public void LoadSceneAsync(string name)
 	{
-		_coroutine = StartCoroutine(Load(name));
+		if (_coroutine == null)
+		{
+			_coroutine = StartCoroutine(Load(name));
+		}
 	}
 
 	// シーンの追加
@@ -47,15 +50,23 @@ public class SceneCtl : MonoBehaviour
 		SceneManager.LoadScene(name, LoadSceneMode.Additive);
 	}
 
+	public void AddSceneAsync(string name)
+	{
+		if (_coroutine == null)
+		{
+			_coroutine = StartCoroutine(Load(name, LoadSceneMode.Additive));
+		}
+	}
+
 	// シーンの削除
 	public void UnLoadScene(string name)
 	{
 		SceneManager.UnloadSceneAsync(name);
 	}
 
-	private IEnumerator Load(string name)
+	private IEnumerator Load(string name, LoadSceneMode loadType = LoadSceneMode.Single)
 	{
-		AsyncOperation async = SceneManager.LoadSceneAsync(name);
+		AsyncOperation async = SceneManager.LoadSceneAsync(name, loadType);
 		async.allowSceneActivation = false;
 
 		while (!async.isDone)
@@ -66,6 +77,8 @@ public class SceneCtl : MonoBehaviour
 			}
 			yield return null;
 		}
+		_coroutine = null;
+
 		yield return null;
 	}
 

@@ -18,8 +18,6 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instans = null;
 
     private Dictionary<AUDIO, AudioSource> _sourcDictionary;
-
-    private List<AudioSource> _sourceList;
     [SerializeField]
     private AudioMixer _mixer = null;
 
@@ -46,7 +44,7 @@ public class AudioManager : MonoBehaviour
         AUDIO type = AUDIO.SYSTEMSE;
         foreach (Transform child in transform)
         {
-            // nullチェック
+            // GetComponet&nullチェック
             if (child.TryGetComponent(out AudioSource source))
             {
                 Debug.Log(type + " = " + source.gameObject.name);
@@ -55,17 +53,6 @@ public class AudioManager : MonoBehaviour
                 type++;
             }
         }
-        // Listタイプ
-        //_sourceList = new List<AudioSource>();
-        //foreach (Transform child in transform)
-        //{
-        // nullチェック
-        //	if (child.TryGetComponent(out AudioSource source))
-        //	{
-        //		Debug.Log(type + " = " + source.gameObject.name);
-        //		_sourceList.Add(source);
-        //	}
-        //}
     }
 
     // サウンド再生(重複あり)
@@ -121,14 +108,10 @@ public class AudioManager : MonoBehaviour
 
     public void AllStop()
     {
+        // ループで全てのタイプのサウンドを停止する
         foreach (var sound in _sourcDictionary)
         {
             sound.Value.Stop();
-        }
-        // ループで全てのAudioSourceのStopを呼ぶ
-        foreach (AudioSource source in _sourceList)
-        {
-            source.Stop();
         }
     }
 
