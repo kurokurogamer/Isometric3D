@@ -26,28 +26,28 @@ public class CharController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // 何かしらのキーが入力されたら
-        if (Input.GetAxis("HorizontalKey") != 0 || Input.GetAxis("VerticalKey")!= 0)
-        {
-            Move();
-        }
+
     }
 
     // 移動
-    void Move()
+    public void Move()
     {
-        Vector3 direction = new Vector3(Input.GetAxis("HorizontalKey"), 0, Input.GetAxis("VerticalKey"));
-        // 左右の移動量
-        Vector3 rightMovement = _right　 * _moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey");
-        // 上下の移動量
-        Vector3 upMovement    = _forward * _moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey");
-        Vector3 pos = rightMovement + upMovement;
+        // 何かしらのキーが入力されたら
+        if (Input.GetAxis("HorizontalKey") != 0 || Input.GetAxis("VerticalKey") != 0)
+        {
+            Vector3 direction = new Vector3(Input.GetAxis("HorizontalKey"), 0, Input.GetAxis("VerticalKey"));
+            // 左右の移動量
+            Vector3 rightMovement = _right * _moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey");
+            // 上下の移動量
+            Vector3 upMovement = _forward * _moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey");
+            Vector3 pos = rightMovement + upMovement;
 
-        // 向きの設定
-        Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
-        transform.forward = heading;
+            // 向きの設定
+            Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
+            transform.forward = heading;
 
-        // 移動
-        transform.position += pos;
+            // 移動
+            transform.position += pos;
+        }
     }
 }

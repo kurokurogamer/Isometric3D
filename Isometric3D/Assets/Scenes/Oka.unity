@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eafbe4acf4906d418fbe56766c8469d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textMessage:
+  _textMessageList:
   - "\u3066\u3059\u3066\u3059"
   _defTextSpeed: 0.05
   _speechBalloon: {fileID: 940411323}
@@ -1286,7 +1286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eafbe4acf4906d418fbe56766c8469d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textMessage:
+  _textMessageList:
   - "\u306B\u3083\u30FC\uFF01"
   - "\u306B\u3083\u30FC\u306B\u3083\u30FC\uFF01"
   _defTextSpeed: 0.05
@@ -1946,6 +1946,8 @@ GameObject:
   - component: {fileID: 1978448662}
   - component: {fileID: 1978448661}
   - component: {fileID: 1978448667}
+  - component: {fileID: 1978448669}
+  - component: {fileID: 1978448668}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2068,6 +2070,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93e880abe6067ff4b9cfdbc7f3ada866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1978448668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978448660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d648c4b36997d64380405e491d82c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 4
+--- !u!114 &1978448669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978448660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f297dfdae89554682623bf6d3880a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &2027117159 stripped
