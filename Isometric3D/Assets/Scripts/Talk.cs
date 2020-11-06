@@ -34,7 +34,11 @@ public class Talk : MonoBehaviour
     // アイコンを常にカメラの角度と同じようにする
     void LateUpdate()
     {
-        _icon.gameObject.transform.rotation = Camera.main.transform.rotation;
+        // アイコンが表示されているとき
+        if (_icon.activeSelf)
+        {
+            _icon.gameObject.transform.rotation = Camera.main.transform.rotation;
+        }
     }
 
     // 当たり判定
