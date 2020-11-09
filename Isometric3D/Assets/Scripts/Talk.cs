@@ -20,7 +20,18 @@ public class Talk : MonoBehaviour
     [SerializeField, Tooltip("頭上のアイコン")]
     private GameObject _icon = default;
 
-
+    private void Awake()
+    {
+        if (_icon != null)
+        {
+            // アイコンの位置をセット
+            GameObject obj = Instantiate(_icon);
+            _icon = obj;
+            _icon.transform.SetParent(gameObject.transform, false);
+            // アイコンを非表示に
+            _icon.gameObject.SetActive(false);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -34,10 +45,13 @@ public class Talk : MonoBehaviour
     // アイコンを常にカメラの角度と同じようにする
     void LateUpdate()
     {
-        // アイコンが表示されているとき
-        if (_icon.activeSelf)
+        if (_icon != null)
         {
-            _icon.gameObject.transform.rotation = Camera.main.transform.rotation;
+            // アイコンが表示されているとき
+            if (_icon.activeSelf)
+            {
+                _icon.gameObject.transform.rotation = Camera.main.transform.rotation;
+            }
         }
     }
 
@@ -49,9 +63,12 @@ public class Talk : MonoBehaviour
         if (other.tag == "Player")
         {
             SetTalkData(other.gameObject);
-           
-            // アイコンの表示
-            _icon.gameObject.SetActive(true);
+
+            if (_icon != null)
+            {
+                // アイコンの表示
+                _icon.gameObject.SetActive(true);
+            }
         }
     }
     // 出たとき
@@ -64,7 +81,10 @@ public class Talk : MonoBehaviour
             // 会話の初期化
             talk.TalkEnd();
             talk.TalkFlag = false;
-            _icon.gameObject.SetActive(false);
+            if (_icon != null)
+            {
+                _icon.gameObject.SetActive(false);
+            }
         }
     }
     // TalkControllerにデータを送る

@@ -25,13 +25,6 @@ public class ItemBase : ScriptableObject
     {
         get { return _itemName; }
     }
-    [SerializeField, Tooltip("アイテムの初期所持数")]
-    private int _itemNum = 0;
-    public int ItemNum
-    {
-        get { return _itemNum; }
-        set { _itemNum = value; }
-    }
 
     [SerializeField, Tooltip("アイテムの情報")]
     private string _information = default;

@@ -6,7 +6,15 @@ using UnityEngine;
 public class ItemContlloer : MonoBehaviour
 {
     // アイテム用リスト
-    private List<ItemBase>  _itemList = new List<ItemBase>();
+    private Dictionary<ItemBase,int>_itemTable  = new Dictionary<ItemBase, int>();
+
+    // アイテム取得可能フラグ(true = 可能,false = 不可)
+    private bool _itemFlag = false;
+    public bool ItemFlag
+    {
+        get { return _itemFlag; }
+        set { _itemFlag = value; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -25,18 +33,17 @@ public class ItemContlloer : MonoBehaviour
     }
 
     // アイテム追加
-    public void SetItem(ItemBase list, int num)
+    public void SetItem(ItemBase item, int num)
     {
-        // アイテムのIDを取得
-        int id = list.ItemId;
-        
-        // ListにIDがなければ要素追加
-        if (!_itemList.Find(x => x.ItemId == id))
+        // アイテムの要素がなかったら追加
+        if (!_itemTable.ContainsKey(item))
         {
-            _itemList.Add(list);
+            _itemTable.Add(item, num);
         }
-
-        // アイテムの個数を増やす
-        _itemList[id].ItemNum += num;
+        else
+        {
+            // 個数だけ追加
+            _itemTable[item] += num;
+        }
     }
 }

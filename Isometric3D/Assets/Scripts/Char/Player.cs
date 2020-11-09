@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     public enum CharState
     {
         NOMAL,  // 通常
-        TALK,   // 会話中
+        IVENT,   // 会話中
         MAX
     }
     private CharState _state;
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
                 // イベント
                 CheckIvent();
                 break;
-            case CharState.TALK:
+            case CharState.IVENT:
                 // 会話
                 _talk.Talk();
                 if(_talk.State == TalkController.TalkState.OFF)
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
             {
                 Input.ResetInputAxes();
                 _talk.Talk();
-                _state = CharState.TALK;
+                _state = CharState.IVENT;
             }
         }
         else

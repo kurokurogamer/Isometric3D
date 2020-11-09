@@ -79,7 +79,10 @@ public class TalkController : MonoBehaviour
     public void Talk()
     {
         // アイコンを非表示に
-        _icon.gameObject.SetActive(false);
+        if (_icon != null)
+        {
+            _icon.gameObject.SetActive(false);
+        }
         // 吹き出しと文字の表示
         _speechBalloon.gameObject.SetActive(true);
         _talkText.gameObject.SetActive(true);
@@ -135,7 +138,10 @@ public class TalkController : MonoBehaviour
             if (_textMessageIndex >= _textMessageList.Count)
             {
                 TalkEnd();
-                _icon.gameObject.SetActive(true);
+                if (_icon != null)
+                {
+                    _icon.gameObject.SetActive(true);
+                }
             }
             else
             {
@@ -154,5 +160,6 @@ public class TalkController : MonoBehaviour
         _talkText.gameObject.SetActive(false);
         _isOneMessage = false;
         _textSpeed = _defTextSpeed;
+        _icon = null;
     }
 }
