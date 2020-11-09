@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     private CharController _move = default;
     // 会話用スクリプト
     private TalkController _talk = default;
+    // アイテム用スクリプト
+    private ItemContlloer _item = default;
 
     // キャラクターの状態
     public enum CharState

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharController : MonoBehaviour
 {
     [SerializeField, Tooltip("キャラクターのスピード")]
-   private float _moveSpeed = 4f;
+    private float _moveSpeed = 4f;
 
     // isometric用の移動軸の設定
     private Vector3 _forward, _right;
