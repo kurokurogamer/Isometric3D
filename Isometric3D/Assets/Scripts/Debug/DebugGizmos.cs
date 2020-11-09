@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
+[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshRenderer))]
 public class DebugGizmos : MonoBehaviour
 {
     private enum TYPE
@@ -17,20 +19,33 @@ public class DebugGizmos : MonoBehaviour
     [SerializeField, Tooltip("ギズモの色指定")]
     private Color _color = Color.white;
     [SerializeField]
-    private bool _gameMode;
-
-
+    public bool _editMode = true;
+    public static bool Mode = true;
     private MeshFilter _meshFilter;
-    private MeshRenderer _meshRenderer;
+    private MeshRenderer _renderer;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        _meshFilter = GetComponent<MeshFilter>();
+        _renderer = GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(_meshFilter)
+		{
+            if(_editMode)
+			{
+                _renderer.enabled = true;
+			}
+            else
+			{
+                _renderer.enabled = false;
+			}
+		}
     }
 
 	private void OnDrawGizmos()
