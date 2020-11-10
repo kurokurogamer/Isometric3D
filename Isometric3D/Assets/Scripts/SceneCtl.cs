@@ -27,6 +27,7 @@ public class SceneCtl : MonoBehaviour
 	{
 		// テスト
 		//AddScene("GameUI");
+		_coroutine = null;
 	}
 
 	// シーンのロード
