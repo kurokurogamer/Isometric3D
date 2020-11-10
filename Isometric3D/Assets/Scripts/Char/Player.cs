@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     // 会話用スクリプト
     private TalkController _talk = default;
     // アイテム用スクリプト
-    private ItemContlloer _item = default;
+    private ItemController _item = default;
 
     // キャラクターの状態
     public enum CharState
@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     {
         _move = gameObject.GetComponent<CharController>();
         _talk = gameObject.GetComponent<TalkController>();
+        _item = gameObject.GetComponent<ItemController>();
         _state = CharState.NOMAL;
     }
 
@@ -61,7 +62,15 @@ public class Player : MonoBehaviour
     // イベントがあるか確認
     void CheckIvent()
     {
-        if (_talk.TalkFlag)
+        if(_item.ItemGetFlag)
+        {
+            // スペースキーで会話開始
+            if (Input.GetButtonDown("Jump"))
+            { 
+                _item.GetItem();
+            }
+        }
+        else if (_talk.TalkFlag)
         {
             // スペースキーで会話開始
             if (Input.GetButtonDown("Jump"))

@@ -11,16 +11,8 @@ public class Item : MonoBehaviour
     [SerializeField, Tooltip("アイテムの個数")]
     private int _itemNum = default;
 
-    [SerializeField, Tooltip("表示するテキストui")]
-    private GameObject _itemText = default;
-
     [SerializeField, Tooltip("頭上のアイコン")]
     private GameObject _icon = default;
-
-    [SerializeField]
-    private Canvas _canvas = default;
-    // テキスト保存用リスト
-    private List<GameObject> _text = new List<GameObject>();
 
     private void Awake()
     {
@@ -43,19 +35,6 @@ public class Item : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // リストに要素があった場合
-        if(_text.Count!=0)
-        {
-            if (_text[0] == null)
-            {
-                // 先頭の要素削除
-                _text.RemoveAt(0);
-            }
-            else
-            {
-                _text[0].SetActive(true);
-            }
-        }
     }
 
     // アイコンを常にカメラの角度と同じようにする
@@ -93,6 +72,7 @@ public class Item : MonoBehaviour
         // キャラクターがコライダーから出たら
         if (other.tag == "Player")
         {
+            
             if (_icon != null)
             {
                 _icon.gameObject.SetActive(false);
@@ -102,17 +82,9 @@ public class Item : MonoBehaviour
     private void SetItemData(GameObject player)
     {
         // アイテム情報追加
-        ItemContlloer item = player.GetComponent<ItemContlloer>();
-        item.SetItem(_item, _itemNum);
-        // テキスト情報追加
-
-        // アイコンの位置をセット
-        GameObject obj = Instantiate(_itemText);
-        obj.transform.SetParent(_canvas.transform,false);
-
-        obj.GetComponent<Text>().text = _item.ItemName + "  を  " + _itemNum.ToString() + "個  " + "入手";
-
-        _text.Add(obj);
-
+        ItemController item = player.GetComponent<ItemController>();
+        item.ItemGetData = _item;
+        item.ItemGetNumData = _itemNum;
+        item.ItemGetFlag = true;
     }
 }
