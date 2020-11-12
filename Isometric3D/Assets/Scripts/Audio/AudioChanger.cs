@@ -25,7 +25,7 @@ public class AudioChanger : MonoBehaviour
 	{
         Vector2 Axis = Vector2.zero;
         Axis.x = Input.GetAxis("Horizontal");
-        Axis.x = Input.GetAxis("Vertical");
+        Axis.y = Input.GetAxis("Vertical");
         if(Axis.x >= 0.1f || Input.GetKey(KeyCode.Q))
 		{
             _slider.value += 0.01f;
