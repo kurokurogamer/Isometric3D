@@ -6,10 +6,9 @@ public class Player : MonoBehaviour
 {
     // 移動用スクリプト
     private CharController _move = default;
-    // 会話用スクリプト
-    private TalkController _talk = default;
-    // アイテム用スクリプト
-    private ItemController _item = default;
+
+    [SerializeField, Tooltip("イベント用コライダー")]
+    private EventCollider _event = default;
 
     // キャラクターの状態
     public enum CharState
@@ -29,9 +28,16 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        foreach(Transform child in transform)
+        {
+            if(child.TryGetComponent(out EventCollider eventcollider))
+            {
+                _event = eventcollider;
+                break;
+            }
+        }
         _move = gameObject.GetComponent<CharController>();
-        _talk = gameObject.GetComponent<TalkController>();
-        _item = gameObject.GetComponent<ItemController>();
+        
         _state = CharState.NOMAL;
     }
 
@@ -43,16 +49,13 @@ public class Player : MonoBehaviour
             case CharState.NOMAL:
                 // 移動
                 _move.Move();
-                // イベント
-                CheckIvent();
+                // アクション関係
+                CheckAction();
                 break;
             case CharState.IVENT:
-                // 会話
-                _talk.Talk();
-                if(_talk.State == TalkController.TalkState.OFF)
-                {
-                    _state = CharState.NOMAL;
-                }
+                // イベント関係
+                NowEvent();
+
                 break;
             default:
                 break;
@@ -60,29 +63,26 @@ public class Player : MonoBehaviour
     }
 
     // イベントがあるか確認
-    void CheckIvent()
+    void CheckAction()
     {
-        if(_item.ItemGetFlag)
+        // スペースキーでイベント開始
+        if (Input.GetButtonDown("Jump"))
         {
-            // スペースキーで会話開始
-            if (Input.GetButtonDown("Jump"))
-            { 
-                _item.GetItem();
-            }
-        }
-        else if (_talk.TalkFlag)
-        {
-            // スペースキーで会話開始
-            if (Input.GetButtonDown("Jump"))
+            // イベントがあるか確認しあればデータのセットをしtrueになる
+            if (_event.CheckEvent())
             {
-                Input.ResetInputAxes();
-                _talk.Talk();
+                // イベント中
                 _state = CharState.IVENT;
             }
         }
-        else
+    }
+
+    void NowEvent()
+    {
+        // イベントを終了時にtrueを返しStateを戻す
+        if(_event.EventObjList[0].EventUpData())
         {
             _state = CharState.NOMAL;
-        }
+        }  
     }
 }

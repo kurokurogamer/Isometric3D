@@ -3,49 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemController : MonoBehaviour
+public class ItemManager : MonoBehaviour
 {
+    // シングルトン
+    private static ItemManager _instans = null;
+    public static ItemManager Instans
+    {
+        get { return _instans; }
+    }
+
     // アイテム用リスト
     private Dictionary<ItemBase,int>_itemTable  = new Dictionary<ItemBase, int>();
+    public Dictionary<ItemBase, int> ItemTable
+    {
+        get { return _itemTable; }
+        set { _itemTable = value; }
+    }
 
     // 入手アイテムデータ保存用
     // キー
     private ItemBase _itemGetData = default;
-    public ItemBase ItemGetData
-    {
-        set { _itemGetData = value; }
-    }
+
     // 個数
     private int _itemGetNumData;
-    public int ItemGetNumData
-    {
-        set { _itemGetNumData = value; }
-    }
 
     [SerializeField, Tooltip("入手時に表示するテキスト")]
-    private GameObject _itemGetTextData = default;
-    public int ItemGetTextData
-    {
-        set { _itemGetNumData = value; }
-    }
+    private GameObject _itemText = default;
+
     [SerializeField, Tooltip("入手時に表示するキャンバス")]
     private Canvas _canvas = default;
 
     // テキスト保存用リスト
     private List<GameObject> _text = new List<GameObject>();
 
-    // アイテム取得可能フラグ(true = 可能,false = 不可)
-    private bool _itemGetFlag = false;
-    public bool ItemGetFlag
+    private void Awake()
     {
-        get { return _itemGetFlag; }
-        set { _itemGetFlag = value; }
+        if (_instans == null)
+        {
+            _instans = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+      
     }
 
     // Update is called once per frame
@@ -61,25 +68,25 @@ public class ItemController : MonoBehaviour
             }
             else
             {
+                // 表示する
                 _text[0].SetActive(true);
             }
         }
     }
-
     public void UseItem()
     {
 
     }
 
     // アイテム追加
-    public void SetItemData(ItemBase item, int num)
+    public void SetItemData(EventObj obj)
     {
-        _itemGetData = item;
-        _itemGetNumData = num;
-    }
-
-    public void GetItem()
-    {
+        ItemObj item = obj.GetComponent<ItemObj>();
+        // アイテムデータ
+        _itemGetData = item.ItemData;
+        // 個数
+        _itemGetNumData = item.ItemNum;
+        
         // アイテムの要素がなかったら追加
         if (!_itemTable.ContainsKey(_itemGetData))
         {
@@ -89,21 +96,19 @@ public class ItemController : MonoBehaviour
         {
             // 個数だけ追加
             _itemTable[_itemGetData] += _itemGetNumData;
-        }
-
-        // テキスト情報追加
-        GameObject obj = Instantiate(_itemGetTextData);
-        obj.transform.SetParent(_canvas.transform, false);
-        obj.GetComponent<Text>().text = _itemGetData.ItemName + "  を  " + _itemGetNumData.ToString() + "個  " + "入手";
-        _text.Add(obj);
-        _itemGetFlag = false;
-        // 入手予定のアイテムの要素を初期化
-        ResetItemData();
+        } 
     }
-    // 入手用するアイテムデータの初期化
-    public void ResetItemData()
+
+    // 入手時のテキストデータを表示
+    public void ItemGetText(EventObj obj)
     {
-        ItemGetData = null;
-        ItemGetNumData = 0;
+        // テキストをインスタンスする
+        GameObject textObj = Instantiate(_itemText);
+        // 表示するキャンバスの子要素にする
+        textObj.transform.SetParent(_canvas.transform, false);
+        // 表示したい文
+        textObj.GetComponent<Text>().text = _itemGetData.ItemName + "  を  " + _itemGetNumData.ToString() + "個  " + "入手";
+        // テキストリストに追加
+        _text.Add(textObj);
     }
 }

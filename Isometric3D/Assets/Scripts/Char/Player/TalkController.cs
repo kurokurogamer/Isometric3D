@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TalkController : MonoBehaviour
+public class TalkController : EventController
 {
+    // イベント用スクリプト
+    private EventCollider _eventCollider = default;
+
     // 会話の状態
     public enum TalkState
     {
@@ -20,35 +23,19 @@ public class TalkController : MonoBehaviour
 
    　// 表示する吹き出し画像
     private Image _speechBalloon = default;
-    public Image SpeechBalloon
-    {
-        set { _speechBalloon = value; }
-    }
+
     // 表示するテキストui
     private Text _talkText = default;
-    public Text TalkText
-    {
-        set { _talkText = value; }
-    }
 
     // オブジェクトの上のアイコン
     private GameObject _icon = default;
-    public GameObject Icon
-    {
-        set { _icon = value; }
-    }
+
     // 表示する会話文
     private List<string> _textMessageList = default;
-    public List<string> TextMessageList
-    {
-        set { _textMessageList = value; }
-    }
+
     // 文字の表示スピード
     private float _defTextSpeed = 0.05f;
-    public float DefTextSpeed
-    {
-        set { _defTextSpeed = value; }
-    }
+    
     private float _textSpeed = default;
     // 現在表示中の文字数
     private int _textCount = 0;
@@ -57,18 +44,10 @@ public class TalkController : MonoBehaviour
     // 1回分の会話を表示したかどうか
     private bool _isOneMessage = false;
 
-    // 会話可能フラグ(true = 会話可能,false = 会話不可)
-    private bool _talkFlag = false;
-    public bool TalkFlag
-    {
-        get { return _talkFlag; }
-        set { _talkFlag = value; }
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        
+        _eventCollider = gameObject.GetComponent<EventCollider>();
     }
 
     // Update is called once per frame
@@ -76,7 +55,26 @@ public class TalkController : MonoBehaviour
     {
     }
 
-    public void Talk()
+    // 会話データのセット
+    public override void SetData(EventObj obj)
+    {
+        //TalkObj talk = obj.GetComponent<TalkObj>();
+
+        //// 吹き出し
+        //_speechBalloon = talk.SpeechBalloon;
+        //// 会話UIText
+        //_talkText = talk.TalkText;
+        //// 頭上のアイコン
+        //_icon = talk.Icon;
+        //// 表示する会話文
+        //_textMessageList = talk.TextMessageList;
+        //// 文字の表示スピード
+        //_defTextSpeed = talk.DefTextSpeed;
+        //// 会話可能フラグ
+        //_eventFlag = true;
+    }
+
+    public override bool EventUpData()
     {
         // アイコンを非表示に
         if (_icon != null)
@@ -137,20 +135,26 @@ public class TalkController : MonoBehaviour
             // すべての会話が終わった
             if (_textMessageIndex >= _textMessageList.Count)
             {
-                TalkEnd();
+                ResetData();
                 if (_icon != null)
                 {
                     _icon.gameObject.SetActive(true);
                 }
+
+                // 会話終了にtrueを返す
+                return true;
             }
             else
             {
                 _isOneMessage = false;
             }
         }
+
+        // 会話が終了しなければfalseを返す
+        return false;
     }
     // 初期化
-    public void TalkEnd()
+    public void ResetData()
     {
         _state = TalkState.OFF;
         _talkText.text = "";
@@ -160,6 +164,5 @@ public class TalkController : MonoBehaviour
         _talkText.gameObject.SetActive(false);
         _isOneMessage = false;
         _textSpeed = _defTextSpeed;
-        _icon = null;
     }
 }
