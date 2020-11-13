@@ -25,8 +25,6 @@ public class SceneCtl : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		// テスト
-		//AddScene("GameUI");
 		_coroutine = null;
 	}
 
