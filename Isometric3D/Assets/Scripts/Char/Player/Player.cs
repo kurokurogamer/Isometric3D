@@ -65,8 +65,14 @@ public class Player : MonoBehaviour
     // イベントがあるか確認
     void CheckAction()
     {
-        // スペースキーでイベント開始
-        if (Input.GetButtonDown("Jump"))
+        // アイテムの使用
+        if (Input.GetButtonDown("Fire3"))
+        {
+            ItemManager.Instans.UseItem();
+        }
+
+            // スペースキーでイベント開始
+            if (Input.GetButtonDown("Jump"))
         {
             // イベントがあるか確認しあればデータのセットをしtrueになる
             if (_event.CheckEvent())
@@ -80,8 +86,11 @@ public class Player : MonoBehaviour
     void NowEvent()
     {
         // イベントを終了時にtrueを返しStateを戻す
-        if(_event.EventObjList[0].EventUpData())
+        if(_event.Event.EventUpData())           
         {
+            // イベントオブジェクトのアイコンの設定
+            _event.SetEventObjIcon();
+
             _state = CharState.NOMAL;
         }  
     }

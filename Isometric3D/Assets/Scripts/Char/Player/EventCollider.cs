@@ -6,10 +6,11 @@ public class EventCollider : MonoBehaviour
 {
     // イベントのオブジェクト保存用List
     private List<EventObj> _eventObjList = new List<EventObj>();
-    public List<EventObj> EventObjList
+    private EventObj _event = default;
+    public EventObj Event
     {
-        get { return _eventObjList; }
-        set { _eventObjList = value; }
+        get { return _event; }
+        set { _event = value; }
     }
 
     // Start is called before the first frame update
@@ -68,24 +69,54 @@ public class EventCollider : MonoBehaviour
     // イベントがあるか確認する
     public bool CheckEvent()
     {
+        if (SortEventList())
+        {
+            // イベントを登録
+            _event = _eventObjList[0];
+            // イベント可能
+            return true;
+        }
+        return false;
+    }
+
+    // ソートと不要なデータがあれば削除
+    private bool SortEventList()
+    {
         // 要素があればtrueになる
         if (_eventObjList == null)
         {
             return false;
         }
-        else if(_eventObjList.Count == 0)
+
+        // 不要な要素削除
+        // リストをコピー
+        List<EventObj> list = new List<EventObj>(_eventObjList);
+        foreach (EventObj obj in list)
+        {
+            // nullは削除
+            if(obj == null)
+            {
+                _eventObjList.Remove(obj);
+            }
+        }
+        // 要素がなくなったらfalse
+        if (_eventObjList.Count == 0)
         {
             return false;
         }
-        else
-        {
-            // イベント可能
-            return true;
-        }
+        
+        return true;
     }
-    // イベントの内容をセット
-    private void SetEventData()
+
+    public void SetEventObjIcon()
     {
-        _eventObjList[0].EventUpData();
+        foreach (EventObj obj in _eventObjList)
+        {
+            // 頭上のアイコンが設定されていれば表示にする
+            if (obj.Icon != null)
+            {
+                obj.Icon.SetActive(true);
+            }
+        }
     }
 }

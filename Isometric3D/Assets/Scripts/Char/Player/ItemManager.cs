@@ -19,22 +19,25 @@ public class ItemManager : MonoBehaviour
         get { return _itemTable; }
         set { _itemTable = value; }
     }
+    private List<ItemBase> _itemlist = new List<ItemBase>();
 
     // 入手アイテムデータ保存用
     // キー
     private ItemBase _itemGetData = default;
-
     // 個数
     private int _itemGetNumData;
 
     [SerializeField, Tooltip("入手時に表示するテキスト")]
     private GameObject _itemText = default;
-
     [SerializeField, Tooltip("入手時に表示するキャンバス")]
     private Canvas _canvas = default;
 
     // テキスト保存用リスト
     private List<GameObject> _text = new List<GameObject>();
+
+    [SerializeField, Tooltip("持っているアイテムを画面上に表示する")]
+    // 使用するアイテムの表示
+    private SpriteRenderer _useItemSprite = default;
 
     private void Awake()
     {
@@ -52,15 +55,17 @@ public class ItemManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      
+       
     }
 
     // Update is called once per frame
     void Update()
     {
+        // アイテム入手テキストのポップアップ
         // リストに要素があった場合
         if (_text.Count != 0)
         {
+            // テキストのアニメーションが終わると自動的に破棄→nullになる
             if (_text[0] == null)
             {
                 // 先頭の要素削除
@@ -73,11 +78,18 @@ public class ItemManager : MonoBehaviour
             }
         }
     }
+
+    // アイテムの使用
     public void UseItem()
     {
-
+        _useItemSprite.sprite = _itemGetData.Icon;
     }
 
+    // アイテムの選択
+    public void SelectItem()
+    {
+        _useItemSprite.sprite = _itemGetData.Icon;
+    }
     // アイテム追加
     public void SetItemData(EventObj obj)
     {
@@ -90,6 +102,11 @@ public class ItemManager : MonoBehaviour
         // アイテムの要素がなかったら追加
         if (!_itemTable.ContainsKey(_itemGetData))
         {
+            // リストに追加
+            _itemlist.Add(_itemGetData);
+            // ID順で並び替え
+            _itemlist.Sort((a, b) => a.ItemId - b.ItemId);
+            
             _itemTable.Add(_itemGetData, _itemGetNumData);
         }
         else
@@ -99,8 +116,13 @@ public class ItemManager : MonoBehaviour
         } 
     }
 
+    private void ItemListSort()
+    {
+
+    }
+
     // 入手時のテキストデータを表示
-    public void ItemGetText(EventObj obj)
+    public void ItemGetText()
     {
         // テキストをインスタンスする
         GameObject textObj = Instantiate(_itemText);
