@@ -2,6 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+
+// アイテムリストの整列規則クラス
+public sealed class SortRule : IComparer<ItemBase> // <>の中身はKeyの型を指定する
+{
+    // ID昇順に並べ替え
+    public int Compare(ItemBase x, ItemBase y)
+    {
+        return x.ItemId - y.ItemId;
+    }
+}
 
 public class ItemManager : MonoBehaviour
 {
@@ -13,13 +24,12 @@ public class ItemManager : MonoBehaviour
     }
 
     // アイテム用リスト
-    private Dictionary<ItemBase,int>_itemTable  = new Dictionary<ItemBase, int>();
-    public Dictionary<ItemBase, int> ItemTable
+    private SortedDictionary<ItemBase, int>_itemTable  = new SortedDictionary<ItemBase, int>(new SortRule());
+    public SortedDictionary<ItemBase, int> ItemTable
     {
         get { return _itemTable; }
         set { _itemTable = value; }
     }
-    private List<ItemBase> _itemlist = new List<ItemBase>();
 
     // 入手アイテムデータ保存用
     // キー
@@ -27,6 +37,7 @@ public class ItemManager : MonoBehaviour
     // 個数
     private int _itemGetNumData;
 
+    // UI
     [SerializeField, Tooltip("入手時に表示するテキスト")]
     private GameObject _itemText = default;
     [SerializeField, Tooltip("入手時に表示するキャンバス")]
@@ -38,6 +49,11 @@ public class ItemManager : MonoBehaviour
     [SerializeField, Tooltip("持っているアイテムを画面上に表示する")]
     // 使用するアイテムの表示
     private SpriteRenderer _useItemSprite = default;
+    // 使用するアイテムの番号
+    private int _useItemNum = 0;
+
+    [SerializeField, Tooltip("アイテム用プレハブ")]
+    ItemCircle _itemCircle = default;
 
     private void Awake()
     {
@@ -61,6 +77,84 @@ public class ItemManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // テキストアニメーションの更新
+        ItemGetTextupData();
+    }
+
+    // アイテムの使用
+    public void UseItem()
+    {
+        // return条件
+        // アイテム未取得の場合
+        if (_itemTable.Count == 0)
+        {
+            return;
+        }
+        // アイテム数が0の場合
+        else if(_itemTable.ElementAt(_useItemNum).Value != 0)
+        {
+            return;
+        }
+       
+
+    }
+
+    // アイテムの選択
+    public void SelectItem()
+    {
+        int num = _useItemNum + (int)Input.GetAxis("ItemSelectKey");
+        // 使用されるアイテムの番号がリストの要素数以上にならないようにする
+        if (_itemTable.Count <= num  || num < 0)
+        {
+            return;
+        }
+        // 要素数の増減を行う
+        _useItemNum = num;
+
+        // 表示スプライトの更新
+        _useItemSprite.sprite = _itemTable.ElementAt(_useItemNum).Key.Icon;
+    }
+
+    // アイテム追加
+    public void SetItemData(EventObj obj)
+    {
+        ItemObj item = obj.GetComponent<ItemObj>();
+        // アイテムデータ
+        _itemGetData = item.ItemData;
+        // 個数
+        _itemGetNumData = item.ItemNum;
+        
+        // アイテムの要素がなかったら追加
+        if (!_itemTable.ContainsKey(_itemGetData))
+        {      
+            // アイテムリストに追加
+            _itemTable.Add(_itemGetData, _itemGetNumData);
+            ItemCircle itemCircle = ItemCircle.Instantiate(_itemCircle, _itemGetData, _itemGetNumData);
+            item.transform.position = Vector3.zero;
+        }
+        else
+        {
+            // 個数だけ追加
+            _itemTable[_itemGetData] += _itemGetNumData;
+        } 
+    }
+
+    // 入手時のテキストデータを表示
+    public void ItemGetText()
+    {
+        // テキストをインスタンスする
+        GameObject textObj = Instantiate(_itemText);
+        // 表示するキャンバスの子要素にする
+        textObj.transform.SetParent(_canvas.transform, false);
+        // 表示したい文
+        textObj.GetComponent<Text>().text = _itemGetData.ItemName + "  を  " + _itemGetNumData.ToString() + "個  " + "入手";
+        // テキストリストに追加
+        _text.Add(textObj);
+    }
+
+    // 入手時に出るテキストのアニメーション
+    private void ItemGetTextupData()
+    {
         // アイテム入手テキストのポップアップ
         // リストに要素があった場合
         if (_text.Count != 0)
@@ -77,60 +171,5 @@ public class ItemManager : MonoBehaviour
                 _text[0].SetActive(true);
             }
         }
-    }
-
-    // アイテムの使用
-    public void UseItem()
-    {
-        _useItemSprite.sprite = _itemGetData.Icon;
-    }
-
-    // アイテムの選択
-    public void SelectItem()
-    {
-        _useItemSprite.sprite = _itemGetData.Icon;
-    }
-    // アイテム追加
-    public void SetItemData(EventObj obj)
-    {
-        ItemObj item = obj.GetComponent<ItemObj>();
-        // アイテムデータ
-        _itemGetData = item.ItemData;
-        // 個数
-        _itemGetNumData = item.ItemNum;
-        
-        // アイテムの要素がなかったら追加
-        if (!_itemTable.ContainsKey(_itemGetData))
-        {
-            // リストに追加
-            _itemlist.Add(_itemGetData);
-            // ID順で並び替え
-            _itemlist.Sort((a, b) => a.ItemId - b.ItemId);
-            
-            _itemTable.Add(_itemGetData, _itemGetNumData);
-        }
-        else
-        {
-            // 個数だけ追加
-            _itemTable[_itemGetData] += _itemGetNumData;
-        } 
-    }
-
-    private void ItemListSort()
-    {
-
-    }
-
-    // 入手時のテキストデータを表示
-    public void ItemGetText()
-    {
-        // テキストをインスタンスする
-        GameObject textObj = Instantiate(_itemText);
-        // 表示するキャンバスの子要素にする
-        textObj.transform.SetParent(_canvas.transform, false);
-        // 表示したい文
-        textObj.GetComponent<Text>().text = _itemGetData.ItemName + "  を  " + _itemGetNumData.ToString() + "個  " + "入手";
-        // テキストリストに追加
-        _text.Add(textObj);
     }
 }

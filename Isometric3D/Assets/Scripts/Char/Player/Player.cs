@@ -65,6 +65,11 @@ public class Player : MonoBehaviour
     // イベントがあるか確認
     void CheckAction()
     {
+        // アイテムの選択
+        if (Input.GetAxis("ItemSelectKey") != 0)
+        {
+            ItemManager.Instans.SelectItem();
+        }
         // アイテムの使用
         if (Input.GetButtonDown("Fire3"))
         {
