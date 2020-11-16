@@ -8,6 +8,8 @@ public class FollowCamera : MonoBehaviour
     private GameObject _target = null;
     [SerializeField, Tooltip("距離")]
     private float _distans = 10.0f;
+    [SerializeField]
+    private GuidReference _ui;
     [SerializeField, Tooltip("カメラサイズ")]
     private float _cameraSize = 10.0f;
     // カメラ回転角度の変更速度

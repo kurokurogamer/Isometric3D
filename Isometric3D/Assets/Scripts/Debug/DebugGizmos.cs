@@ -31,14 +31,14 @@ public class DebugGizmos : MonoBehaviour
         _meshFilter = GetComponent<MeshFilter>();
         _renderer = GetComponent<MeshRenderer>();
         //_renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
-    }
+      }
 
     // Update is called once per frame
     void Update()
     {
         if(_meshFilter)
 		{
-            if(_editMode)
+            if(Mode)
 			{
                 _renderer.enabled = true;
 			}
