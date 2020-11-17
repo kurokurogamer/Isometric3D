@@ -53,7 +53,7 @@ public class ItemManager : MonoBehaviour
     private int _useItemNum = 0;
 
     [SerializeField, Tooltip("アイテム用プレハブ")]
-    ItemCircle _itemCircle = default;
+    ItemIcon _itemCircle = default;
 
     private void Awake()
     {
@@ -129,8 +129,7 @@ public class ItemManager : MonoBehaviour
         {      
             // アイテムリストに追加
             _itemTable.Add(_itemGetData, _itemGetNumData);
-            ItemCircle itemCircle = ItemCircle.Instantiate(_itemCircle, _itemGetData, _itemGetNumData);
-            item.transform.position = Vector3.zero;
+            ItemIcon itemCircle = ItemIcon.Instantiate(_itemCircle, _itemGetData, _itemGetNumData);
         }
         else
         {

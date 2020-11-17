@@ -7,7 +7,7 @@ TagManager:
   - EventCollider
   - Talk
   - Item
-  - ItemUI
+  - ItemCircle
   layers:
   - Default
   - TransparentFX
