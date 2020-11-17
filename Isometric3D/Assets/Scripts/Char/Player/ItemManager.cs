@@ -130,6 +130,7 @@ public class ItemManager : MonoBehaviour
             // アイテムリストに追加
             _itemTable.Add(_itemGetData, _itemGetNumData);
             ItemIcon itemCircle = ItemIcon.Instantiate(_itemCircle, _itemGetData, _itemGetNumData);
+
         }
         else
         {
