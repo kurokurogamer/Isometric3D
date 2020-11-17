@@ -56,7 +56,7 @@ public class EnemySearch : MonoBehaviour
         _target = null;
         _listCount = 0;
         _nowSecondTime = 0.0f;
-        _nowSearchTime = 0.0f;
+        _nowSearchTime = 3.0f;
         _agent = GetComponent<NavMeshAgent>();
         _sphere = GetComponent<SphereCollider>();
         // 初期化時に目標地点を設定しておく
