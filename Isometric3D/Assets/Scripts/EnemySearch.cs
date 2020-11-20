@@ -55,7 +55,7 @@ public class EnemySearch : MonoBehaviour
         _icon.transform.localPosition = Vector3.zero;
         _target = null;
         _listCount = 0;
-        _nowSecondTime = 0.0f;
+        _nowSecondTime = 3.0f;
         _nowSearchTime = 3.0f;
         _agent = GetComponent<NavMeshAgent>();
         _sphere = GetComponent<SphereCollider>();
@@ -132,7 +132,7 @@ public class EnemySearch : MonoBehaviour
         }
 
         // ナビゲート対象に近づいた時点で更新する
-        if (Vector3.Distance(transform.position, _pointList[_listCount].transform.position) <= 0.1f)
+        if (Vector3.Distance(transform.position, _pointList[_listCount].transform.position) <= 0.5f)
         {
             _listCount++;
             _nowSecondTime = 0f;
@@ -159,8 +159,6 @@ public class EnemySearch : MonoBehaviour
         if (other.tag == "Player")
         {
             Vector3 hitPos = other.ClosestPointOnBounds(transform.position);
-
-            Debug.Log("範囲外に移動");
 
             // アニメーションセット
             _autoAnimObj.stateName = "Fade";

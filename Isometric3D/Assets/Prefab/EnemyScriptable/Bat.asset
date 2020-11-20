@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyName: Bat
   _speed: 1
-  _secondTime: 2
+  _secondTime: 0
   _waitTime: 3
   _searchAngle: 25
   _clip: {fileID: 0}

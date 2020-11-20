@@ -23,6 +23,8 @@ public class DebugGizmos : MonoBehaviour
     public static bool Mode = true;
     private MeshFilter _meshFilter;
     private MeshRenderer _renderer;
+    private BoxCollider _box;
+    private SphereCollider _sphere;
 
 
     // Start is called before the first frame update
@@ -30,6 +32,8 @@ public class DebugGizmos : MonoBehaviour
     {
         _meshFilter = GetComponent<MeshFilter>();
         _renderer = GetComponent<MeshRenderer>();
+        _box = GetComponent<BoxCollider>();
+        _sphere = GetComponent<SphereCollider>();
         //_renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
       }
 
@@ -38,7 +42,7 @@ public class DebugGizmos : MonoBehaviour
     {
         if(_meshFilter)
 		{
-            if(Mode)
+            if(_editMode)
 			{
                 _renderer.enabled = true;
 			}
@@ -57,10 +61,24 @@ public class DebugGizmos : MonoBehaviour
 		switch (_type)
 		{
 			case TYPE.CUBE:
-				Gizmos.DrawCube(Vector3.zero, Vector3.one);
+                if (_box != null)
+                {
+                    Gizmos.DrawCube(Vector3.zero, _box.size);
+                }
+                else
+                {
+                    Gizmos.DrawCube(Vector3.zero, Vector3.one);
+                }
 				break;
 			case TYPE.SPHERE:
-                Gizmos.DrawSphere(Vector3.zero, 0.5f);
+                if (_sphere != null)
+                {
+                    Gizmos.DrawSphere(Vector3.zero, _sphere.radius);
+                }
+                else
+				{
+                    Gizmos.DrawSphere(Vector3.zero, 0.5f);
+                }
                 break;
 			case TYPE.MAX:
 			default:
