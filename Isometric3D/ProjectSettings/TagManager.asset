@@ -8,6 +8,7 @@ TagManager:
   - Talk
   - Item
   - ItemCircle
+  - Light
   layers:
   - Default
   - TransparentFX
@@ -44,4 +45,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UpDefault
+    uniqueID: 437391039
     locked: 0

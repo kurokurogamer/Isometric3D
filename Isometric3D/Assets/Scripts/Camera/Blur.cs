@@ -5,7 +5,13 @@ using UnityEngine;
 public class Blur : MonoBehaviour
 {
     [SerializeField, Range(0, 5)]
-    private int _iteration = 1;
+    private float _iteration = 1;
+
+    public float iteration
+	{
+		get { return _iteration; }
+		set { _iteration = value; }
+	}
 
     // 4点をサンプリングして色を作るマテリアル
     [SerializeField]
