@@ -46,14 +46,16 @@ public class ItemManager : MonoBehaviour
     // テキスト保存用リスト
     private List<GameObject> _text = new List<GameObject>();
 
-    [SerializeField, Tooltip("持っているアイテムを画面上に表示する")]
-    // 使用するアイテムの表示
-    private SpriteRenderer _useItemSprite = default;
     // 使用するアイテムの番号
     private int _useItemNum = 0;
 
-    [SerializeField, Tooltip("アイテム用プレハブ")]
-    ItemIcon _itemCircle = default;
+    [SerializeField, Tooltip("アイテムアイコンを表示するサークル")]
+    private ItemCircle _itemCircle = default;
+
+    [SerializeField, Tooltip("アイテムアイコン用プレハブ")]
+    private ItemIcon _itemIcon = default;
+
+   
 
     private void Awake()
     {
@@ -71,7 +73,6 @@ public class ItemManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
     }
 
     // Update is called once per frame
@@ -108,11 +109,12 @@ public class ItemManager : MonoBehaviour
         {
             return;
         }
+        // 表示スプライトの更新
+        StartCoroutine(_itemCircle.SelectItem(num - _useItemNum));
         // 要素数の増減を行う
         _useItemNum = num;
 
-        // 表示スプライトの更新
-        _useItemSprite.sprite = _itemTable.ElementAt(_useItemNum).Key.Icon;
+
     }
 
     // アイテム追加
@@ -129,13 +131,15 @@ public class ItemManager : MonoBehaviour
         {      
             // アイテムリストに追加
             _itemTable.Add(_itemGetData, _itemGetNumData);
-            ItemIcon itemCircle = ItemIcon.Instantiate(_itemCircle, _itemGetData, _itemGetNumData);
-
+            // アイテムサークルにアイコンを追加
+            _itemGetData.ItemIcon = ItemIcon.Instantiate(_itemIcon, _itemGetData, _itemGetNumData);  
         }
         else
         {
             // 個数だけ追加
             _itemTable[_itemGetData] += _itemGetNumData;
+            // 所持数テキストの更新
+            _itemGetData.ItemIcon.ItemNumText.text = _itemTable[_itemGetData].ToString();
         } 
     }
 

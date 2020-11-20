@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemUi :MonoBehaviour
+public class ItemCircle :MonoBehaviour
 {
 	[SerializeField, Tooltip("リングコマンドの半径")]
 	private float _radius = 100;
@@ -82,5 +82,27 @@ public class ItemUi :MonoBehaviour
 
 		_itemIconList.Add(obj);
 		Arrange();
+	}
+
+	// 
+	public IEnumerator SelectItem(int rightFlag)
+    {
+
+
+		// 逆時計回り
+		if (rightFlag == -1)
+        {
+
+			_offsetAngle -= 45;
+			Arrange();
+
+		}
+		else
+        {
+			_offsetAngle += 45;
+			Arrange();
+		}
+
+		yield return null;
 	}
 }

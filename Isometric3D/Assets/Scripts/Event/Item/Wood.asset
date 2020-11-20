@@ -16,3 +16,4 @@ MonoBehaviour:
   _itemID: 1
   _itemName: "\u6728\u306E\u679D"
   _information: 
+  _itemIcon: {fileID: 0}

@@ -13,7 +13,14 @@ public class ItemIcon : MonoBehaviour
 
     [SerializeField, Tooltip("個数を表示するテキスト")]
     private Text _itemNumText = default;
+    public Text ItemNumText
+    {
+        get { return _itemNumText; }
+    }
 
+    private ItemBase _item = default;
+
+    private ItemManager _itemManager = default;
     // アイコン用ID
     private int _itemId = 0;
     public int ItemId
@@ -24,6 +31,7 @@ public class ItemIcon : MonoBehaviour
     public static ItemIcon Instantiate(ItemIcon prefab, ItemBase item, int num)
     {
         ItemIcon obj = Instantiate(prefab) as ItemIcon;
+        obj._item = item;
         obj._itemSprite.sprite = item.Icon;
         obj._itemName.text = item.ItemName;
         obj._itemNumText.text = num.ToString();
@@ -34,7 +42,9 @@ public class ItemIcon : MonoBehaviour
 
     private void Awake()
     {
+
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,12 +56,15 @@ public class ItemIcon : MonoBehaviour
         transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
         // アイコンのセット
-        itemCircle.GetComponent<ItemUi>().SetItemIcon(gameObject);
+        itemCircle.GetComponent<ItemCircle>().SetItemIcon(gameObject);
+
+        _itemManager = ItemManager.Instans.GetComponent<ItemManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
+
 }
