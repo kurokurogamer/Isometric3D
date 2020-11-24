@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     // 移動用スクリプト
     private CharController _move = default;
+    private CharAction _action;
 
     [SerializeField, Tooltip("イベント用コライダー")]
     private EventCollider _event = default;
@@ -37,8 +38,9 @@ public class Player : MonoBehaviour
             }
         }
         _move = gameObject.GetComponent<CharController>();
-        
+        _action = GetComponent<CharAction>();
         _state = CharState.NOMAL;
+        _action.Play();
     }
 
     // Update is called once per frame
@@ -75,6 +77,11 @@ public class Player : MonoBehaviour
         {
             ItemManager.Instans.UseItem();
         }
+
+        if(Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.M))
+		{
+            _action.Play();
+		}
 
             // スペースキーでイベント開始
             if (Input.GetButtonDown("Jump"))

@@ -28,7 +28,7 @@ public class Blur : MonoBehaviour
 
         var i = 0;
         RenderTexture currentDest = null;
-
+        
         // ダウンサンプリング
         for (; i < _iteration; i++)
         {

@@ -10,6 +10,8 @@ public class CharController : MonoBehaviour
     // isometric用の移動軸の設定
     private Vector3 _forward, _right;
 
+    private Animator _animator = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +22,7 @@ public class CharController : MonoBehaviour
         _forward = Vector3.Normalize(_forward);
         // 右はカメラに対して90度回転させた方向
         _right = Quaternion.Euler(new Vector3(0, 90, 0)) * _forward;
-
+        _animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -48,6 +50,14 @@ public class CharController : MonoBehaviour
 
             // 移動
             transform.position += pos;
+            if (_animator != null)
+            {
+                _animator.SetBool("Walk", true);
+            }
+        }
+        else if (_animator != null)
+        {
+            _animator.SetBool("Walk", false);
         }
     }
 }
