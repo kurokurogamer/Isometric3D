@@ -103,18 +103,16 @@ public class ItemManager : MonoBehaviour
     // アイテムの選択
     public void SelectItem()
     {
-        int num = _useItemNum + (int)Input.GetAxis("ItemSelectKey");
+        int num = _itemCircle.UseItemListNum + (int)Input.GetAxis("ItemSelectKey");
+        Input.ResetInputAxes();
         // 使用されるアイテムの番号がリストの要素数以上にならないようにする
-        if (_itemTable.Count <= num  || num < 0)
+        if (num < 0 || _itemTable.Count <= num)
         {
             return;
         }
         // 表示スプライトの更新
-        StartCoroutine(_itemCircle.SelectItem(num - _useItemNum));
-        // 要素数の増減を行う
-        _useItemNum = num;
-
-
+        _itemCircle.SelectItem(num - _itemCircle.UseItemListNum);
+ 
     }
 
     // アイテム追加
