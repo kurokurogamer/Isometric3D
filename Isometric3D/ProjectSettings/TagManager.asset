@@ -9,6 +9,8 @@ TagManager:
   - Item
   - ItemCircle
   - Light
+  - Much
+  - Tree
   layers:
   - Default
   - TransparentFX
