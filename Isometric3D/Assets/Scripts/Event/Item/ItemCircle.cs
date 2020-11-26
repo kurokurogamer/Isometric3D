@@ -8,7 +8,7 @@ using DG.Tweening;
 public class ItemCircle :MonoBehaviour
 {
 	[SerializeField, Tooltip("リングコマンドの半径")]
-	private float _radius = 100;
+	private float _radius = 30;
 	[SerializeField, Tooltip("リングコマンド選択される位置")]
 	private float _offsetAngle = 45;
 	[SerializeField, Tooltip("リングコマンドの中心座標")]
@@ -37,21 +37,30 @@ public class ItemCircle :MonoBehaviour
 
 	// アニメーション用
 	private Tweener _tweener = default;
-
 	private RectTransform _rectTransform = default;
 
-	void Start()
+	// 非表示時の座標
+	private Vector2 _inactivePos = default;
+	private void Awake()
     {
 		_rectTransform = GetComponent<RectTransform>();
+		_inactivePos = _rectTransform.anchoredPosition;
+	}
+
+    void Start()
+    {
 		_angle = 360 / _polygon;
 	}
 
-	// 位置の設定
-	private void Arrange()
-	{
-		//float splitAngle = -360 / _polygon;
-		//var rect = transform as RectTransform;
+    private void OnEnable()
+    {
+		// アニメーションの登録・開始
+		_rectTransform.DOAnchorPos(new Vector2(-400, -225), 0.5f);
+	}
 
+    // 位置の設定
+    private void Arrange()
+	{
 		// 子の要素の数だけ回す
 		for (int elementId = 0; elementId < _itemIconList.Count; elementId++)
 		{
@@ -64,17 +73,22 @@ public class ItemCircle :MonoBehaviour
 			{
 				// アイテムの名前表示
 				_itemIconList[elementId].transform.GetChild(1).gameObject.SetActive(true);
+				// 画像を前に持ってくる
+				_itemIconList[elementId].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 5;
 			}
 			else
 			{
 				// アイテムの名前非表示
 				_itemIconList[elementId].transform.GetChild(1).gameObject.SetActive(false);
+				// 画像を後ろに下げる
+				_itemIconList[elementId].transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = -1;
 			}
 			// 位置の設定
 			child.anchoredPosition = new Vector2(
 			Mathf.Cos(currentAngle * Mathf.Deg2Rad) + _centerPos.x,
 			Mathf.Sin(currentAngle * Mathf.Deg2Rad) + _centerPos.y) * _radius;
 		}
+		// 戻るアニメーション
 		_tweener = _rectTransform.DOAnchorPos(new Vector2(-400, -225), 0.5f).SetDelay(1);
 	}
 
@@ -85,7 +99,7 @@ public class ItemCircle :MonoBehaviour
 		if (rightFlag == -1)
         {
 			// アニメーション
-			OnMove();
+			ItemChangeAnim();
 			// 選択中アイテム基準の回転角
 			_offsetAngle -= _angle;
 			// 選択中のアイテム
@@ -96,7 +110,7 @@ public class ItemCircle :MonoBehaviour
 		else
         {
 			// アニメーション
-			OnMove();
+			ItemChangeAnim();
 			// 選択中アイテム基準の回転角
 			_offsetAngle += _angle;
 			// 選択中のアイテム
@@ -121,14 +135,15 @@ public class ItemCircle :MonoBehaviour
 			// リストに入っているIDを見る
 			int id = item.GetComponent<ItemIcon>().ItemId;
 			if (itemId < id)
-			{
+			{		
 				_itemIconList.Insert(listId, obj);
+
 				// 選択されているアイテムよりも追加アイテムのIDが前だった場合
-				if (obj.GetComponent<ItemIcon>().ItemId < id)
+				if (itemId < _itemIconList[_useItemListNum].GetComponent<ItemIcon>().ItemId)
 				{
-					// 角度を補正する
-					_offsetAngle += _angle;
 					_useItemListNum++;
+					// 角度を補正する
+					_offsetAngle += _angle;		
 				}
 				// 位置の設定
 				Arrange();
@@ -144,7 +159,7 @@ public class ItemCircle :MonoBehaviour
 		Arrange();
 	}
 	// サークルが右下から出てくるアニメーション
-	private void OnMove()
+	private void ItemChangeAnim()
     {
 		// 戻るアニメーションが登録されていたら
 		if (_tweener != null)
@@ -155,4 +170,31 @@ public class ItemCircle :MonoBehaviour
 		// アニメーションの登録・開始
 		_rectTransform.DOAnchorPos(new Vector2(-350, -175), 0.5f);
 	}
+
+    private void Update()
+    {
+		if(Input.GetKeyDown(KeyCode.M))
+        {
+			gameObject.SetActive(false);
+        }
+
+
+
+            
+
+	}
+
+    private void OnDisable()
+    {
+		InactiveAnim();
+
+	}
+
+    // アイテムサークルの非アクティブ時のアニメーション
+    public void InactiveAnim()
+    {
+		// アニメーションの登録・開始
+		_rectTransform.DOAnchorPos(_inactivePos, 0.5f);
+	}
+
 }

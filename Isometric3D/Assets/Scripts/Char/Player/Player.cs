@@ -78,13 +78,13 @@ public class Player : MonoBehaviour
             ItemManager.Instans.UseItem();
         }
 
-        if(Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.M))
-		{
+        if (Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.M))
+        {
             _action.Play();
-		}
+        }
 
-            // スペースキーでイベント開始
-            if (Input.GetButtonDown("Jump"))
+        // スペースキーでイベント開始
+        if (Input.GetButtonDown("Jump"))
         {
             // イベントがあるか確認しあればデータのセットをしtrueになる
             if (_event.CheckEvent())

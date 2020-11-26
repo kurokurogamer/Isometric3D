@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TalkObj : EventObj
 {
@@ -16,7 +17,7 @@ public class TalkObj : EventObj
     private Image _speechBalloon = default;
 
     [SerializeField, Tooltip("表示するテキストui")]
-    private Text _talkText = default;
+    private TextMeshProUGUI _talkText = default;
 
     
     // 現在表示中の文字数

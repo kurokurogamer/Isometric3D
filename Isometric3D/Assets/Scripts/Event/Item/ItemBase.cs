@@ -33,7 +33,7 @@ public class ItemBase : ScriptableObject
         get { return _information; }
     }
 
-    [SerializeField, Tooltip("アイテムサークル使うプレハブ")]
+    // アイテムサークル使うプレハブ
     private ItemIcon _itemIcon = default;
     public ItemIcon ItemIcon
     {

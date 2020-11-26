@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 878bca4d05a7156478d3e085d60756dc, type: 3}
   m_Name: Match
   m_EditorClassIdentifier: 
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 4eafc640f4308b741992d3500f7230f7, type: 3}
   _itemID: 2
   _itemName: "\u30DE\u30C3\u30C1"
   _information: 
-  _itemIcon: {fileID: 0}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ItemIcon : MonoBehaviour
 {
@@ -9,11 +10,11 @@ public class ItemIcon : MonoBehaviour
     private SpriteRenderer _itemSprite = default;
 
     [SerializeField, Tooltip("アイテムの名前を表示するテキスト")]
-    private Text _itemName = default;
+    private TextMeshProUGUI _itemName = default;
 
     [SerializeField, Tooltip("個数を表示するテキスト")]
-    private Text _itemNumText = default;
-    public Text ItemNumText
+    private TextMeshProUGUI _itemNumText = default;
+    public TextMeshProUGUI ItemNumText
     {
         get { return _itemNumText; }
     }

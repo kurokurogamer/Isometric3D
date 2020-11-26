@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 
 // アイテムリストの整列規則クラス
 public sealed class SortRule : IComparer<ItemBase> // <>の中身はKeyの型を指定する
@@ -124,6 +125,14 @@ public class ItemManager : MonoBehaviour
         // 個数
         _itemGetNumData = item.ItemNum;
         
+        if (_itemCircle != null)
+        {
+            if (_itemCircle.gameObject.activeSelf == false)
+            {
+                _itemCircle.gameObject.SetActive(true);
+            }
+        }
+
         // アイテムの要素がなかったら追加
         if (!_itemTable.ContainsKey(_itemGetData))
         {      
@@ -149,7 +158,7 @@ public class ItemManager : MonoBehaviour
         // 表示するキャンバスの子要素にする
         textObj.transform.SetParent(_canvas.transform, false);
         // 表示したい文
-        textObj.GetComponent<Text>().text = _itemGetData.ItemName + "  を  " + _itemGetNumData.ToString() + "個  " + "入手";
+        textObj.GetComponent<TextMeshProUGUI>().text = _itemGetData.ItemName + "  を  " + _itemGetNumData.ToString() + "個  " + "入手";
         // テキストリストに追加
         _text.Add(textObj);
     }
