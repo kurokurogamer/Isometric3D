@@ -171,30 +171,21 @@ public class ItemCircle :MonoBehaviour
 		_rectTransform.DOAnchorPos(new Vector2(-350, -175), 0.5f);
 	}
 
-    private void Update()
-    {
-		if(Input.GetKeyDown(KeyCode.M))
-        {
-			gameObject.SetActive(false);
-        }
-
-
-
-            
-
-	}
-
     private void OnDisable()
     {
 		InactiveAnim();
 
 	}
 
-    // アイテムサークルの非アクティブ時のアニメーション
-    public void InactiveAnim()
+	// アイテムサークルの非アクティブ時のアニメーション
+	public IEnumerator InactiveAnim()
     {
 		// アニメーションの登録・開始
 		_rectTransform.DOAnchorPos(_inactivePos, 0.5f);
+
+		yield return new WaitForSeconds(0.5f);
+
+		gameObject.SetActive(false);
 	}
 
 }

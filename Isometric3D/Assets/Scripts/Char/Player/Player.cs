@@ -6,10 +6,13 @@ public class Player : MonoBehaviour
 {
     // 移動用スクリプト
     private CharController _move = default;
-    private CharAction _action;
+    private CharAction _action = default;
 
     [SerializeField, Tooltip("イベント用コライダー")]
     private EventCollider _event = default;
+
+    [SerializeField, Tooltip("アイテム選択用表示用UI")]
+    private ItemCircle _itemCircle = default;
 
     // キャラクターの状態
     public enum CharState
@@ -89,6 +92,18 @@ public class Player : MonoBehaviour
             // イベントがあるか確認しあればデータのセットをしtrueになる
             if (_event.CheckEvent())
             {
+                // アイテム取得のイベント以外はUIアイテムUIを非表示にする
+                if (_event.Event.tag != "Item")
+                {
+                    // アイテムUIを非表示にする
+                    if (_itemCircle != null)
+                    {
+                        if (_itemCircle.gameObject.activeSelf == true)
+                        {
+                            StartCoroutine(_itemCircle.InactiveAnim());
+                        }
+                    }
+                }
                 // イベント中
                 _state = CharState.IVENT;
             }
@@ -102,6 +117,16 @@ public class Player : MonoBehaviour
         {
             // イベントオブジェクトのアイコンの設定
             _event.SetEventObjIcon();
+
+            // アイテムUIを表示する
+            if (_itemCircle != null)
+            {
+                if (_itemCircle.gameObject.activeSelf == false
+                &&  _itemCircle.ItemIconList.Count != 0)
+                {
+                    _itemCircle.gameObject.SetActive(true);
+                }
+            }
 
             _state = CharState.NOMAL;
         }  
