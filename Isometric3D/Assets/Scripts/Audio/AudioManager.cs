@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
         MAX
     }
 
-    public static AudioManager instans = null;
+    public static AudioManager instance = null;
 
     private Dictionary<AUDIO, AudioSource> _sourcDictionary;
     [SerializeField]
@@ -25,10 +25,10 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instans == null)
+        if (instance == null)
         {
-            instans = this;
-            DontDestroyOnLoad(instans);
+            instance = this;
+            DontDestroyOnLoad(instance);
         }
         else
         {
@@ -62,15 +62,16 @@ public class AudioManager : MonoBehaviour
     }
 
     // サウンド再生(重複なし)
-    public void PlayOneShot(AUDIO type, AudioClip clip)
+    public void PlayOneShot(AudioClip clip, AUDIO type)
     {
         _sourcDictionary[type].PlayOneShot(clip);
     }
 
 
-    public void PlayOneSE(AudioClip clip, AUDIO type = AUDIO.SYSTEMSE)
+    // 
+    public void PlayOneSE(AudioClip clip)
     {
-        _sourcDictionary[type].PlayOneShot(clip);
+        _sourcDictionary[AUDIO.SYSTEMSE].PlayOneShot(clip);
     }
 
     public void PlayOneBGM(AudioClip clip)

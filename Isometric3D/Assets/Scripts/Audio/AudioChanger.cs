@@ -18,7 +18,7 @@ public class AudioChanger : MonoBehaviour
 
     public void SetVolume()
     {
-        AudioManager.instans.SetVolume(_type, _slider.value);
+        AudioManager.instance.SetVolume(_type, _slider.value);
     }
 
     private void InputCheck()

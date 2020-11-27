@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gimmick : MonoBehaviour
+// 抽象クラス
+public abstract class ButtonAction : MonoBehaviour
 {
-    // Gimmickの状態:true=解かれている,false=解かれていない。
-    protected bool _active;
-    
     // Start is called before the first frame update
     void Start()
     {
-        _active = false;
+        
     }
+
+    // それぞれのボタンごとの処理を記述する
+    public abstract void Action();
 
     // Update is called once per frame
     void Update()

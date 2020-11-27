@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WoodGimmick : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class WoodGimmick : Gimmick
 {
     // エフェクトオブジェクト
     [SerializeField, Tooltip("パーティクルシステムが付いているオブジェクト(設定しなければ子のオブジェクトから自動で取得します)")]
     private GameObject _effect;
     private ParticleSystem _particle;
     private Animator _animator;
-    private bool _active;
     private bool _ignition;
     private float _nowTime;
 
@@ -50,7 +50,7 @@ public class WoodGimmick : MonoBehaviour
         {
             _nowTime += Time.deltaTime;
         }
-        if (_nowTime >= 0.5f && !_active)
+        if (_nowTime >= 3.0f && !_active)
         {
             if (_animator != null)
             {
@@ -67,7 +67,6 @@ public class WoodGimmick : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-        Debug.Log("衝突したオブジェクト" + other);
         if (other.tag == "Much")
         {
             if (_animator != null)
@@ -85,7 +84,7 @@ public class WoodGimmick : MonoBehaviour
 
 	private void OnTriggerStay(Collider other)
 	{
-		if(other.tag == "Tree" && !_ignition)
+        if ((other.tag == "Tree") && !_ignition)
 		{
             Debug.Log("木が近くにある");
             WoodGimmick gimmick = other.GetComponent<WoodGimmick>();

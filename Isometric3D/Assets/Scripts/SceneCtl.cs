@@ -5,15 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneCtl : MonoBehaviour
 {
-	public static SceneCtl instans = null;
+	public static SceneCtl instance = null;
 
 	private Coroutine _coroutine;
 
 	private void Awake()
 	{
-		if (instans == null)
+		if (instance == null)
 		{
-			instans = this;
+			instance = this;
 			DontDestroyOnLoad(this.gameObject);
 		}
 		else
@@ -26,12 +26,13 @@ public class SceneCtl : MonoBehaviour
 	void Start()
 	{
 		_coroutine = null;
+		AddSceneAsync("Oka");
 	}
 
 	// シーンのロード
 	public void LoadScene(string name)
 	{
-		SceneManager.LoadScene(name);
+		SceneManager.LoadScene(name, LoadSceneMode.Single);
 	}
 
 	// シーンのロード(非同期読み込み)
@@ -39,7 +40,7 @@ public class SceneCtl : MonoBehaviour
 	{
 		if (_coroutine == null)
 		{
-			_coroutine = StartCoroutine(Load(name));
+			_coroutine = StartCoroutine(Load(name, LoadSceneMode.Single));
 		}
 	}
 
@@ -49,6 +50,7 @@ public class SceneCtl : MonoBehaviour
 		SceneManager.LoadScene(name, LoadSceneMode.Additive);
 	}
 
+	// シーンの追加(非同期読み込み)
 	public void AddSceneAsync(string name)
 	{
 		if (_coroutine == null)
@@ -63,20 +65,35 @@ public class SceneCtl : MonoBehaviour
 		SceneManager.UnloadSceneAsync(name);
 	}
 
+	// 非同期読み込み処理
 	private IEnumerator Load(string name, LoadSceneMode loadType = LoadSceneMode.Single)
 	{
+		GameObject obj = null;
+		foreach(Transform child in transform)
+		{
+			obj = child.gameObject;
+			obj.SetActive(true);
+		}
+		Debug.Log("読み込み開始");
 		AsyncOperation async = SceneManager.LoadSceneAsync(name, loadType);
 		async.allowSceneActivation = false;
 
 		while (!async.isDone)
 		{
-			if (async.progress >= 0.9)
+			if (async.progress >= 0.9f)
 			{
+				Debug.Log("読み込み完了");
 				async.allowSceneActivation = true;
 			}
 			yield return null;
 		}
+		yield return new WaitForSeconds(3.0f);
 		_coroutine = null;
+		if (obj != null)
+		{
+			obj.SetActive(false);
+		}
+		Debug.Log("読み込み終了");
 
 		yield return null;
 	}

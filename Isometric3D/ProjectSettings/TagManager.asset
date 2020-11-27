@@ -11,6 +11,7 @@ TagManager:
   - Light
   - Much
   - Tree
+  - Button
   layers:
   - Default
   - TransparentFX
