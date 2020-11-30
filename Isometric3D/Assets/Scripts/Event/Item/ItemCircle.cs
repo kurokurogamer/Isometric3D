@@ -36,31 +36,31 @@ public class ItemCircle : MonoBehaviour
 	}
 
 	// アニメーション用
-	private Tweener[] _tweener = default;
+	private Sequence _sequences = default;
 	private RectTransform _rectTransform = default;
 	[SerializeField, Tooltip("選択時の回転の度合")]
 	private AnimationCurve _curve = default;
 	// 矢印のアニメーション用
 	[SerializeField, Tooltip("左矢印")]
 	private GameObject _leftArrow = default;
-	private RectTransform _leftArrowDefPos = default;
-	private Tweener _leftArrowtweener = default;
+	private RectTransform _leftArrowRt = default;
+
 	[SerializeField, Tooltip("右矢印")]
 	private GameObject _rightArrow = default;
-	private RectTransform _rightArrowDefPos = default;
-	private Tweener _rightArrowtweener = default;
+	private RectTransform _rightArrowRt = default;
 
 	// 非表示時の座標
 	private Vector2 _inactivePos = default;
 	private void Awake()
 	{
-		_tweener = new Tweener[3];
+		// アニメーション用
+		_sequences = DOTween.Sequence();
+		// サークル
 		_rectTransform = GetComponent<RectTransform>();
 		_inactivePos = _rectTransform.anchoredPosition;
-
-		_leftArrowDefPos = _leftArrow.GetComponent<RectTransform>();
-		_rightArrowDefPos = _rightArrow.GetComponent<RectTransform>();
-
+		// 矢印
+		_leftArrowRt = _leftArrow.GetComponent<RectTransform>();
+		_rightArrowRt = _rightArrow.GetComponent<RectTransform>();
 	}
 
 	void Start()
@@ -108,10 +108,13 @@ public class ItemCircle : MonoBehaviour
 			child.DOAnchorPos(pos, 0.2f).SetEase(_curve);
 
 		}
+
 		// 戻るアニメーション
-		_tweener[0] = _rectTransform.DOAnchorPos(new Vector2(-400, -225), 0.5f).SetDelay(1);
-		_tweener[1] = _leftArrow.GetComponent<RectTransform>().DOAnchorPos(new Vector2(20, 50), 0.5f).SetDelay(1);
-		_tweener[2] = _rightArrow.GetComponent<RectTransform>().DOAnchorPos(new Vector2(50, 20), 0.5f).SetDelay(1);
+		_sequences.Append(_rectTransform.DOAnchorPos(new Vector2(-400, -225), 0.5f).SetDelay(1));
+		_sequences.Join(_leftArrowRt.DOAnchorPos(new Vector2(20, 50), 0.5f).SetDelay(1).SetEase(_curve));
+		_sequences.Join(_leftArrowRt.DOLocalRotate(new Vector3(0, 0, -225), 0.5f, RotateMode.Fast).SetDelay(1));
+		_sequences.Join(_rightArrowRt.DOAnchorPos(new Vector2(50, 20), 0.5f).SetDelay(1).SetEase(_curve));
+		_sequences.Join(_rightArrowRt.GetComponent<RectTransform>().DOLocalRotate(new Vector3(0, -180, 225), 0.5f, RotateMode.Fast).SetDelay(1));
 	}
 
 	// アイテム選択
@@ -170,19 +173,13 @@ public class ItemCircle : MonoBehaviour
 	private void ItemChangeAnim()
 	{
 		// 戻るアニメーションが登録されていたら
-		for (int k = 0; k < _tweener.Length; k++)
-		{
-			if (_tweener[k] != null)
-			{
-				// 削除
-				_tweener[k].Kill();
-			}
-		}
+		DOTween.KillAll();
 		// アニメーションの登録・開始
-		_rectTransform.DOAnchorPos(new Vector2(-350, -175), 0.5f);
-		_leftArrow.GetComponent<RectTransform>().DOAnchorPos(new Vector2(5, 55), 0.5f).SetEase(_curve);
-		_rightArrow.GetComponent<RectTransform>().DOAnchorPos(new Vector2(55, 5), 0.5f).SetEase(_curve);
-
+		_sequences.Append(_rectTransform.DOAnchorPos(new Vector2(-350, -175), 0.5f));
+		_sequences.Join(_leftArrowRt.DOAnchorPos(new Vector2(5, 55), 0.5f).SetEase(_curve));
+		_sequences.Join(_leftArrowRt.DOLocalRotate(new Vector3(0, 0, -200), 0.5f, RotateMode.Fast));
+		_sequences.Join(_rightArrowRt.DOAnchorPos(new Vector2(55, 5), 0.5f).SetEase(_curve));
+		_sequences.Join(_rightArrowRt.DOLocalRotate(new Vector3(0, -180, 250), 0.5f, RotateMode.Fast));  
 	}
 
 	private void OnDisable()
