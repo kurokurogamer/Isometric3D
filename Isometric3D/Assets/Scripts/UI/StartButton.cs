@@ -6,6 +6,8 @@ public class StartButton : ButtonAction
 {
     private CanvasGroup _canvasGroup;
     private FadeUI _fade;
+    [SerializeField]
+    private GuidReference _player;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +18,7 @@ public class StartButton : ButtonAction
 	public override void Action()
 	{
         Debug.Log("はじめから始める");
-        _canvasGroup.alpha = 0;
+        //_canvasGroup.alpha = 0;
         _fade.Active = true;
         //throw new System.NotImplementedException();
 	}
@@ -25,5 +27,11 @@ public class StartButton : ButtonAction
 	void Update()
     {
         _canvasGroup.alpha = _fade.Alpha;
+        if(_canvasGroup.alpha == 0)
+		{
+            _player.gameObject.GetComponent<CharController>().enabled = true;
+            SceneCtl.instance.UnLoadScene("Title");
+
+		}
     }
 }

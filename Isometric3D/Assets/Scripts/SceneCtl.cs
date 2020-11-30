@@ -8,7 +8,10 @@ public class SceneCtl : MonoBehaviour
 	public static SceneCtl instance = null;
 
 	private Coroutine _coroutine;
-
+	[SerializeField]
+	private FadeUI _fade = null;
+	[SerializeField]
+	private GameObject _ui;
 	private void Awake()
 	{
 		if (instance == null)
@@ -26,7 +29,6 @@ public class SceneCtl : MonoBehaviour
 	void Start()
 	{
 		_coroutine = null;
-		AddSceneAsync("Oka");
 	}
 
 	// シーンのロード
@@ -72,12 +74,12 @@ public class SceneCtl : MonoBehaviour
 		foreach(Transform child in transform)
 		{
 			obj = child.gameObject;
-			obj.SetActive(true);
 		}
 		Debug.Log("読み込み開始");
 		AsyncOperation async = SceneManager.LoadSceneAsync(name, loadType);
 		async.allowSceneActivation = false;
-
+		_ui.SetActive(true);
+		yield return new WaitForSeconds(3.0f);
 		while (!async.isDone)
 		{
 			if (async.progress >= 0.9f)
@@ -87,8 +89,12 @@ public class SceneCtl : MonoBehaviour
 			}
 			yield return null;
 		}
-		yield return new WaitForSeconds(3.0f);
 		_coroutine = null;
+		_ui.SetActive(false);
+		_fade.Mode = FadeUI.FADE_MODE.OUT;
+		_fade.Active = true;
+		yield return new WaitForSeconds(3.0f);
+
 		if (obj != null)
 		{
 			obj.SetActive(false);

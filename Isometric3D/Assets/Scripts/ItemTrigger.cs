@@ -22,7 +22,7 @@ public class ItemTrigger : MonoBehaviour
 		if(other.tag == "Light")
 		{
 			_sprite.enabled = true;
-			float distans = Vector3.Distance(transform.position, other.transform.position);
+			float distans = Vector3.Distance(transform.position, other.transform.position + new Vector3(0,-1,0));
 			if(distans < 5)
 			{
 				distans = 0;

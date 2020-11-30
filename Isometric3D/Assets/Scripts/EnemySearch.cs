@@ -186,14 +186,14 @@ public class EnemySearch : MonoBehaviour
         {
             _sphere = GetComponent<SphereCollider>();
         }
-        // 円弧描画処理
-        //Handles.color = _color;
-        //Handles.DrawSolidArc(transform.position, Vector3.up, Quaternion.Euler(0f, -_enemyDate.searchAngle, 0f) * transform.forward, _enemyDate.searchAngle * 2f, _sphere.radius);
-        //Handles.color = _color2;
-        //Handles.DrawSolidArc(transform.position, Vector3.up, Quaternion.Euler(0f, -_enemyDate.searchAngle, 0f) * transform.forward, _enemyDate.searchAngle * 2f, _sphere.radius * 0.7f);
+		// 円弧描画処理
+		//Handles.color = _color;
+		//Handles.DrawSolidArc(transform.position, Vector3.up, Quaternion.Euler(0f, -_enemyDate.searchAngle, 0f) * transform.forward, _enemyDate.searchAngle * 2f, _sphere.radius);
+		//Handles.color = _color2;
+		//Handles.DrawSolidArc(transform.position, Vector3.up, Quaternion.Euler(0f, -_enemyDate.searchAngle, 0f) * transform.forward, _enemyDate.searchAngle * 2f, _sphere.radius * 0.7f);
 
-        // 経路の表示
-        if (_agent)
+		// 経路の表示
+		if (_agent)
         {
             Gizmos.color = Color.red;
             var prefPos = transform.position;

@@ -31,7 +31,7 @@ public class FollowCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _camera = Camera.main.GetComponent<Camera>();
+        _camera = GetComponent<Camera>();
     }
 
     // ターゲットオブジェクト追従処理

@@ -191,7 +191,6 @@ public class MenuSelect : MonoBehaviour
 
 	protected virtual void Check()
 	{
-		Debug.Log("処理中");
 		if (Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.N))
 		{
 			// キャンセルサウンドを鳴らす
@@ -208,7 +207,7 @@ public class MenuSelect : MonoBehaviour
 				AudioManager.instance.PlayOneSE(_clip);
 			}
 			_buttonList[_id].Action();
-			this.enabled = false;
+			//this.enabled = false;
 		}
 	}
 

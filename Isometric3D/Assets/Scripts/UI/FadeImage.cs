@@ -25,7 +25,6 @@ public class FadeImage : FadeUI
 		{
 			_image = GetComponent<Image>();
 		}
-		Debug.Log("処理");
 		if (_image)
 		{
 			_image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _alpha);
